@@ -1,14 +1,37 @@
-all: src test
+all: beforeMake src test
 
-test: test/testParseCommandLine.cc src
+beforeMake:
+	test -d obj || mkdir obj
+	test -e src.a || touch src.a
 
-src: src/parseCommandLine.cc.o
-	test -d src.a || touch src.a
+test: testParseCommandLine testCell testBackground
 
-src/parseCommandLine.cc.o :src/parseCommandLine.cc src/parseCommandLine.h
+src: parseCommandLine.cc.o Cell.cc.o Background.cc.o
+
+Cell.cc.o: src/Cell.cc src/Cell.h
+	g++ -g -std=c++11 -o obj/Cell.cc.o -c src/Cell.cc
+	
+
+parseCommandLine.cc.o :src/parseCommandLine.cc src/parseCommandLine.h
 	g++ -g -std=c++11 -o obj/parseCommandLine.cc.o -c src/parseCommandLine.cc
-	ar -rs src.a obj/parseCommandLine.cc.o
+	#ar -rs src.a obj/parseCommandLine.cc.o
 
-test: test/testParseCommandLine.cc src
+Background.cc.o: src/Background.h src/Background.cc
+	g++ -g -std=c++11 -o obj/Background.cc.o -c src/Background.cc
+
+testParseCommandLine: test/testParseCommandLine.cc src
 	g++ -g -std=c++11 -o obj/testParseCommandLine.cc.o -c test/testParseCommandLine.cc
 	g++ -o testParseCommandLine obj/parseCommandLine.cc.o obj/testParseCommandLine.cc.o
+	#g++ -o testParseCommandLine src.a obj/testParseCommandLine.cc.o
+
+testCell: test/testCell.cc src
+	g++ -g -std=c++11 -o obj/testCell.cc.o -c test/testCell.cc
+	g++ -o testCell obj/testCell.cc.o obj/Cell.cc.o
+
+testBackground: src test/testBackground.cc
+	g++ -g -std=c++11 -o obj/testBackground.cc.o -c test/testBackground.cc
+	g++ -o testBackground obj/testBackground.cc.o obj/Background.cc.o obj/Cell.cc.o obj/parseCommandLine.cc.o
+
+clean:
+	-rm -rf obj/
+	-rm testBackground
