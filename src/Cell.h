@@ -8,7 +8,7 @@ public:
     enum status{alive, died};
     Cell();
     void setStatus(status s);
-    void setNeighborNum();
+    void neighborNumAddOne();
     int neighborNum(){return neighborNum_;}
     bool isAlive(){return status_ == alive;}
 private:

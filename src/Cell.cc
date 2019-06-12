@@ -9,6 +9,6 @@ void Cell::setStatus(status s){
     status_ = s;
 }
 
-void Cell::setNeighborNum(){
-    
+void Cell::neighborNumAddOne(){
+    ++neighborNum_;
 }

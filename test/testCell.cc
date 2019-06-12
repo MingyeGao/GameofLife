@@ -3,8 +3,10 @@
 
 int main(){
     Cell testCell;
-    printf("%d", testCell.neighborNum());
-    if(!testCell.isAlive()){printf("die!");}
-
+    printf("%d\n", testCell.neighborNum());
+    if(!testCell.isAlive()){printf("die!\n");}
+    testCell.neighborNumAddOne();
+    printf("%d\n", testCell.neighborNum());
+    
     return 0;
 }
