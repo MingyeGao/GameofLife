@@ -17,8 +17,8 @@ public:
     vector<vector<Cell> > backgroundNext_;
     void update();
     void print();
-    void clearScreen(){printf("\033[2J");}
-    int circleTime;
+    void clearScreen(){system("cls");}
+    int circleTime_;
     int rows_;
     int columns_;
 

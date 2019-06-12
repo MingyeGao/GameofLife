@@ -14,7 +14,7 @@
 using namespace std;
 
 Background::Background(Options &options):
-  circleTime(options.circleTime){
+  circleTime_(options.circleTime){
     ifstream ifile(options.fileName);
     if(!ifile.good()){
         perror("config file open failed");
@@ -100,11 +100,15 @@ void Background::update(){
                 }
             }
 
-            if(backgroundNext_[i][j].neighborNum() == 2 || backgroundNext_[i][j].neighborNum() == 3){
-                backgroundNext_[i][j].setStatus(Cell::alive);
+            if(backgroundNow_[i][j].isAlive()){
+                if(backgroundNext_[i][j].neighborNum() == 2 || backgroundNext_[i][j].neighborNum() == 3){
+                    backgroundNext_[i][j].setStatus(Cell::alive);
+                }
             }
             else{
-                backgroundNext_[i][j].setStatus(Cell::died);
+                if(backgroundNext_[i][j].neighborNum() == 3){
+                    backgroundNext_[i][j].setStatus(Cell::alive);
+                }
             }
             
         }
@@ -116,10 +120,10 @@ void Background::update(){
 
 
 void Background::start(){
-    for(int i = 0; i < 5; ++i){
+    while(true){
         print();
         update();
-        sleep(1);
+        usleep(circleTime_*1000);
     }
     
 }
