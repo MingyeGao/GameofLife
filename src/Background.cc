@@ -41,6 +41,8 @@ Background::Background(Options &options):
 
     backgroundNext_ = vector<vector<Cell>>(row, vector<Cell>(column, Cell()));
     backgroundNow_ = vector<vector<Cell>>(row, vector<Cell>(column, Cell()));
+    rows_ = row;
+    columns_ = column;
 
     for(auto it = alivePosition.begin(); it != alivePosition.end(); ++it){
         backgroundNow_[it->first][it->second].setStatus(Cell::alive);
@@ -49,7 +51,7 @@ Background::Background(Options &options):
 }
 
 void Background::print(){
-    printf("\033[2J");
+    clearScreen();
     for(int i = 0; i < backgroundNow_.size(); ++i){
         for(int j = 0; j < backgroundNow_[i].size(); ++j){
             if(backgroundNow_[i][j].isAlive()){
@@ -62,5 +64,54 @@ void Background::print(){
         printf("\n");
     }
 }
+
+void Background::update(){
+    for(int i = 0; i < backgroundNow_.size(); ++i){
+        for(int j = 0; j < backgroundNow_[i].size(); ++j){
+            if(i - 1 >= 0){
+                if(j - 1 >= 0 && backgroundNow_[i-1][j-1].isAlive()){
+                    backgroundNext_[i][j].neighborNumAddOne();
+                }
+                if(j + 1 < backgroundNow_[i].size() && backgroundNow_[i-1][j+1].isAlive()){
+                    backgroundNext_[i][j].neighborNumAddOne();
+                }
+                if(backgroundNow_[i-1][j].isAlive()){
+                    backgroundNext_[i][j].neighborNumAddOne();
+                }
+            }
+            {
+                if(j - 1 >= 0 && backgroundNow_[i][j-1].isAlive()){
+                    backgroundNext_[i][j].neighborNumAddOne();
+                }
+                if(j + 1 < backgroundNow_[i].size() && backgroundNow_[i][j+1].isAlive()){
+                    backgroundNext_[i][j].neighborNumAddOne();
+                }
+            }
+            if(i + 1 < backgroundNow_.size()){
+                if(j - 1 >= 0 && backgroundNow_[i+1][j-1].isAlive()){
+                    backgroundNext_[i][j].neighborNumAddOne();
+                }
+                if(j + 1 < backgroundNow_[i].size() && backgroundNow_[i+1][j+1].isAlive()){
+                    backgroundNext_[i][j].neighborNumAddOne();
+                }
+                if(backgroundNow_[i+1][j].isAlive()){
+                    backgroundNext_[i][j].neighborNumAddOne();
+                }
+            }
+
+            if(backgroundNext_[i][j].neighborNum() == 2 || backgroundNext_[i][j].neighborNum() == 3){
+                backgroundNext_[i][j].setStatus(Cell::alive);
+            }
+            else{
+                backgroundNext_[i][j].setStatus(Cell::died);
+            }
+            
+        }
+    }
+
+    swap(backgroundNow_, backgroundNext_);
+    backgroundNext_ = vector<vector<Cell>>(rows_, vector<Cell>(columns_, Cell()));
+}
+
   
 

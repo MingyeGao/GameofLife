@@ -8,6 +8,9 @@ int main(int argc, char* argv[]){
     parseCommandLine(argc, argv, option);
     Background background1(option);
     background1.print();
+    background1.update();
+    getchar();
+    background1.print();
     
 
     return 0;
