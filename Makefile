@@ -2,9 +2,8 @@ all: beforeMake src test
 
 beforeMake:
 	test -d obj || mkdir obj
-	test -e src.a || touch src.a
 
-test: testParseCommandLine testCell testBackground
+test: testParseCommandLine testCell testBackground testBackgroundStart
 
 src: parseCommandLine.cc.o Cell.cc.o Background.cc.o
 
@@ -32,6 +31,10 @@ testBackground: src test/testBackground.cc
 	g++ -g -std=c++11 -o obj/testBackground.cc.o -c test/testBackground.cc
 	g++ -o testBackground obj/testBackground.cc.o obj/Background.cc.o obj/Cell.cc.o obj/parseCommandLine.cc.o
 
+testBackgroundStart: src test/testBackgroundStart.cc
+	g++ -g -std=c++11 -o obj/testBackgroundStart.cc.o -c test/testBackgroundStart.cc
+	g++ -o testBackgroundStart obj/testBackgroundStart.cc.o obj/Background.cc.o obj/Cell.cc.o obj/parseCommandLine.cc.o
+
 clean:
 	-rm -rf obj/
-	-rm testBackground
+	-rm test*

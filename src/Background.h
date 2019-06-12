@@ -13,8 +13,8 @@ public:
     Background(Options &options);
     void start();
 public:
-    vector<vector<Cell>> backgroundNow_;
-    vector<vector<Cell>> backgroundNext_;
+    vector<vector<Cell> > backgroundNow_;
+    vector<vector<Cell> > backgroundNext_;
     void update();
     void print();
     void clearScreen(){printf("\033[2J");}
