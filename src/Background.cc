@@ -1,4 +1,5 @@
 #include <assert.h>
+#include <unistd.h>
 
 #include <vector>
 #include <fstream>
@@ -113,5 +114,14 @@ void Background::update(){
     backgroundNext_ = vector<vector<Cell>>(rows_, vector<Cell>(columns_, Cell()));
 }
 
+
+void Background::start(){
+    for(int i = 0; i < 5; ++i){
+        print();
+        update();
+        sleep(1);
+    }
+    
+}
   
 

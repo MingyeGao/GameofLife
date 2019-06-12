@@ -6,14 +6,8 @@
 int main(int argc, char* argv[]){
     Options option;
     parseCommandLine(argc, argv, option);
-    Background background1(option);
-    background1.print();
-    background1.update();
-    getchar();
-    background1.print();
-    background1.update();
-    getchar();
-    background1.print();
+    Background background(option);
+    background.start();
     
 
     return 0;
