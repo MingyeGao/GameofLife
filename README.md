@@ -3,7 +3,7 @@
 
 
 ## 程序简介
-** 使用方法
+**使用方法**
 ```shell
 cd GameofLife
 make
